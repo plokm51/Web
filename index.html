@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>MovieOrder</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+ 
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<div id="app">
+  <div class="title">Movie Ordering</div>
+  <div class="movie" @wheel.prevent="wheel($event)">
+    <div class="cards"><!--定義所有卡-->
+      <div class="card" v-for="movie in movies"><!--定義一張卡的樣式-->
+        <div class="left"><!--卡在左邊-->
+          <div class="cover" :style="bgcss(movie.cover)"></div><!--background image的方式處理-->
+        </div>
+        <div class="right"><!--資訊在右邊-->
+          <h2>{{ movie.name }}</h2><!--秀出電影名字和類別-->
+          <h4>{{ movie.type }}</h4>
+          <p v-html="movie.description"></p><!--電影敘述-->
+          QTY<input value = "1" id='number'><!--增加輸入數量的方塊-->
+          <div class="price">{{ movie.price }}</div><!--電影價錢-->
+          <button class="add" @click="addCart(movie, $event)">+ Add To Cart</button><!--新增按鈕讓觀眾購買，點集滑鼠就觸發addCart的methods-->
+        </div>
+      </div>
+    </div>
+    <!-------------------------------------------以下購物車程式碼----------------------------------------->
+  </div>
+  <div class="buybox" :style="bgcss(currentMovie.cover)" v-if="currentMovie"></div>
+  <div class="fixed-control" @click="isCartOpen=!isCartOpen"><!--購物車開關-->
+    <i class="fa fa-shopping-cart"></i><!--圖案-->
+    <span>{{cart.length}}</span><!--數量-->
+  </div>
+  <!--以下為打開購物車的程式碼-->
+  <div class="control" v-if="isCartOpen">
+    <div class="panel">
+      <h2> Movie Cart </h2>
+      <button class="add" @click="clearCart(movie,$event)">Clear</button>>
+      <ul><!--ul跟li用來做列出清單的工作-->
+        <li v-for="(movie,mid) in cart"><!--列出購物車陣列中的所有電影-->
+          <div class="thumbnail" :style="bgcss(movie.cover)"></div>
+          <h3>{{movie.name}}
+            <button class="add" @click="delCart(movie, $event)">Del</button><!--刪除此電影-->
+            <div class="price">${{movie.price}}</div><!--價錢-->
+          </h3>
+        </li>
+        <li v-if="!cart.length"><!--購物車陣列沒東西就顯示空車-->
+          <h3>Empty Cart</h3>
+        </li>
+      </ul>
+      <hr>
+      <h2>{{totalPrice}}</h2>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- partial -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js'></script>
+<script  src="./script.js"></script>
+
+</body>
+</html>
